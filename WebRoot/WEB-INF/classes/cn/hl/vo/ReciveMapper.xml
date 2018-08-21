@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.hl.vo.Recive">
+	<insert id="addReciver" parameterType="cn.hl.vo.Recive">
+		insert into sys_mail_recive 
+		values
+		<!-- 
+			collection	：待遍历集合对象
+			item		：遍历到的每一个元素
+			separator	：分隔符
+		-->
+		<foreach collection="list" item="item" separator=",">
+			(#{item.reciverId},#{item.mailId},#{item.state})
+		</foreach>
+	</insert>
+</mapper>

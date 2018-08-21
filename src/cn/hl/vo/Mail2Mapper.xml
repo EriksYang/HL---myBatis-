@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.hl.vo.Mail2">
+	<!-- 收件箱 -->
+	<select id="getReciveList" parameterType="int" resultMap="reciverMap">
+		select a.*,b.userId,b.account,c.state as mailState from 
+			sys_mail a left join sys_users b on a.senderId=b.userId
+			left join sys_mail_recive c on a.mailId=c.mailId
+			where c.reciverId=#{reciver.reciverId} and c.state!=9
+	</select>
+	<!-- 查询垃圾箱 -->
+	<select id="getDustbin" parameterType="int" resultMap="reciverMap">
+		select a.*,b.userId,b.account,c.state as mailState from 
+				sys_mail a left join sys_users b on a.senderId=b.userId
+				left join sys_mail_recive c on a.mailId=c.mailId
+				where c.reciverId=#{reciver.reciverId} and c.state=9
+	</select>
+	
+	<!-- 查询发件箱 -->
+	<select id="getSendBox" parameterType="int" resultMap="reciverMap">
+		select * from sys_mail where senderId=#{sender.userId}
+	</select>
+	
+	<!-- 修改已读邮件状态 -->
+	<update id="setState" parameterType="cn.hl.vo.Mail2">
+		update sys_mail_recive set state=#{reciver.state}
+			where reciverId=#{reciver.reciverId} and mailId=#{mailId}
+	</update>
+	
+	<!-- 读取邮件信息 -->
+	<select id="getMail" parameterType="int" resultMap="reciverMap">
+		select a.*,b.userId,b.account,c.state as mailState from 
+			sys_mail a left join sys_users b on a.senderId=b.userId
+			left join sys_mail_recive c on a.mailId=c.mailId
+			where a.mailId=#{mailId}
+	</select>
+	
+	<resultMap type="cn.hl.vo.Mail2" id="reciverMap">
+		<id property="mailId" column="mailId"/>
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="createTime" column="createTime"/>
+		<!-- 关联用户信息 -->
+		<association property="sender" javaType="cn.hl.vo.User">
+			<id property="userId"  column="userId"/>
+			<result property="account"  column="account"/>
+		</association>
+		
+		<!-- 关联收件信息 -->
+		<association property="reciver" javaType="cn.hl.vo.Recive">
+			<result property="state" column="mailState"/>
+		</association>
+	</resultMap>
+</mapper>

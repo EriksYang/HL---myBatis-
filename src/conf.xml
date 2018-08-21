@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+	
+<configuration>
+	<!-- 配置properties配置文件的相关信息 -->
+	<properties resource="connection.properties"></properties>
+
+	<settings>
+		<!-- 设置：启用缓存 -->
+		<setting name="cacheEnabled" value="true"/>
+	</settings>
+	
+	<!-- 配置类型别名 -->
+	<typeAliases>
+		<typeAlias type="cn.hl.vo.Mail" alias="Mail"/>
+	</typeAliases>
+	
+
+
+	<environments default="dev">
+		<environment id="dev">
+			<transactionManager type="JDBC"></transactionManager>
+			
+			<dataSource type="POOLED">
+				<!-- 引入配置文件中的相关配置 -->
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${pwd}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="cn/hl/vo/UserMapper.xml"></mapper>
+		<mapper resource="cn/hl/vo/MailMapper.xml"></mapper>
+		<mapper resource="cn/hl/vo/Mail2Mapper.xml"></mapper>
+		<mapper resource="cn/hl/vo/ReciveMapper.xml"></mapper>
+	</mappers>
+</configuration>
